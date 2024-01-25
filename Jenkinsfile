@@ -7,7 +7,7 @@ pipeline {
     stages{
         stage('Fetch code') {
           steps{
-              git branch: 'vp-rem', url:'https://github.com/tawfeeq421/java-project.git'
+              git branch: 'ci-jenkins', url:'https://github.com/tawfeeq421/java-project.git'
           }  
         }
 
@@ -52,6 +52,18 @@ pipeline {
               }
             }
         }
+
+        stage("Quality Gate") {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
+                    // true = set pipeline to UNSTABLE, false = don't
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
+
 
     }
 }
